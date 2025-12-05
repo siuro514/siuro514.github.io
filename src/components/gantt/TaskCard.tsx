@@ -286,15 +286,20 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
       {...attributes}
       {...listeners}
     >
-      <CardContent sx={{ 
-        p: 1.5, 
-        '&:last-child': { pb: 1.5 }, 
-        height: '100%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center'
-      }}>
+      <CardContent 
+        onPointerDown={(e) => {
+          // 在 CardContent 上阻止拖拽的指针事件，让点击和编辑正常工作
+          e.stopPropagation();
+        }}
+        sx={{ 
+          p: 1.5, 
+          '&:last-child': { pb: 1.5 }, 
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          textAlign: 'center'
+        }}>
         {/* 超連結標記 */}
         {task.url && (
           <Box

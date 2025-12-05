@@ -6,9 +6,6 @@
     <link rel="apple-touch-icon" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Page Not Found - Ganttleman" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <title>404 - Page Not Found | Ganttleman</title>
     
@@ -90,5 +87,40 @@
       <p class="desc">Sorry, the page you're looking for doesn't exist or has been moved.</p>
       <a href="/" class="btn">← Back to Home</a>
     </div>
+
+    <script>
+      // SPA 路由重定向脚本
+      // 当 GitHub Pages 返回 404 时，根据路径重定向到对应的语言版本
+      
+      const path = window.location.pathname;
+      
+      // 支持的语言列表
+      const supportedLanguages = ['en', 'zh-tw', 'zh-cn', 'ja', 'ko', 'es'];
+      
+      // 提取第一层路径（语言代码）
+      const pathMatch = path.match(/^\/([^/]+)(.*)/);
+      
+      if (pathMatch) {
+        const firstSegment = pathMatch[1];
+        const remainingPath = pathMatch[2] || '';
+        
+        // 检查第一段是否是支持的语言
+        if (supportedLanguages.includes(firstSegment)) {
+          // 这是一个有效的语言路由，重定向到该语言版本的 index.html
+          // 保留原始路径，让 React Router 处理
+          const targetUrl = `/${firstSegment}/${remainingPath}`;
+          window.location.replace(targetUrl);
+        } else {
+          // 第一段不是语言代码，重定向到英文版本
+          const targetUrl = `/en${path}`;
+          window.location.replace(targetUrl);
+        }
+      } else {
+        // 根路径，重定向到首页
+        window.location.replace('/en/');
+      }
+      
+      // 如果上面的重定向没有执行（例如脚本被禁用），显示静态 404 页面
+    </script>
   </body>
 </html>

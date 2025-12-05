@@ -4,18 +4,18 @@ import path from 'path';
 import fs from 'fs';
 import { execSync } from 'child_process';
 
-// 自動生成 404.html 的插件（用於 GitHub Pages）
+// 自動生成 404.html 的插件（用於 GitHub Pages SPA 路由）
 function generate404Plugin() {
   return {
     name: 'generate-404',
     closeBundle() {
       const distPath = path.resolve(__dirname, 'dist');
-      const templatePath = path.join(__dirname, '404.html');
+      const indexPath = path.join(distPath, 'index.html');
       const notFoundPath = path.join(distPath, '404.html');
       
-      if (fs.existsSync(templatePath)) {
-        fs.copyFileSync(templatePath, notFoundPath);
-        console.log('✅ 已生成 404.html（複製自模板）');
+      if (fs.existsSync(indexPath)) {
+        fs.copyFileSync(indexPath, notFoundPath);
+        console.log('✅ 已生成 404.html（複製自 index.html）');
       }
     },
   };

@@ -20,7 +20,6 @@ import TermsPage from './pages/TermsPage';
 import AboutPage from './pages/AboutPage';
 import GanttGuidePage from './pages/GanttGuidePage';
 import FAQPage from './pages/FAQPage';
-import NotFoundPage from './pages/NotFoundPage';
 
 // 组件用于设置页面标题和 SEO meta 标签
 function DocumentTitle() {
@@ -175,8 +174,6 @@ function LanguageRoutes() {
       <Route path="/terms" element={<><Navbar /><TermsPage /><Footer /></>} />
       <Route path="/gantt-guide" element={<><Navbar /><GanttGuidePage /><Footer /></>} />
       <Route path="/faq" element={<><Navbar /><FAQPage /><Footer /></>} />
-      {/* Catch-all 404 页面 */}
-      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

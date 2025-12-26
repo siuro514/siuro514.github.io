@@ -16,6 +16,21 @@ const routes = [
   'faq'
 ];
 
+// 需要建立重定向的 legacy routes (root level) -> target default language (en)
+// 這些是不帶語言前綴的路徑，為了避免 404，我們產生靜態的重定向頁面
+const legacyRoutes = [
+  { path: 'tools/gantt', target: 'en/tools/gantt' },
+  { path: 'tools/json-parser', target: 'en/tools/json-parser' },
+  { path: 'tools/base64', target: 'en/tools/base64' },
+  { path: 'tools/crypto', target: 'en/tools/crypto' },
+  { path: 'tools/image-compressor', target: 'en/tools/image-compressor' },
+  { path: 'about', target: 'en/about' },
+  { path: 'privacy', target: 'en/privacy' },
+  { path: 'terms', target: 'en/terms' },
+  { path: 'gantt-guide', target: 'en/gantt-guide' },
+  { path: 'faq', target: 'en/faq' }
+];
+
 // 语言配置
 const languages = [
   {
@@ -87,16 +102,17 @@ const templateHtml = fs.readFileSync(templateHtmlPath, 'utf-8');
 
 console.log('🌍 Generating language-specific HTML files...\n');
 
-// 为每种语言生成 HTML
+// 準備 Sitemap 內容
+let sitemapUrls = [];
+const baseUrl = 'https://ganttleman.com';
+
+// 1. 為每種語言生成 HTML
 languages.forEach(lang => {
   console.log(`📝 Processing language: ${lang.code} (${lang.path})`);
 
-  // 基础语言目录
   const langBaseDir = path.join(distPath, lang.path);
 
-  // 替换 HTML 中的 SEO 标签 (基础替换)
-  // 注意：这只是为了解决 404 问题，让 Google 能够索引。
-  // 更详细的页面级 title/meta 仍然由客户端 React 代码在运行时更新。
+  // 替換 HTML 元數據
   let langHtml = templateHtml;
   langHtml = langHtml.replace(/<html lang="[^"]*"/, `<html lang="${lang.htmlLang}"`);
   langHtml = langHtml.replace(/<title>.*?<\/title>/, `<title>${lang.title}</title>`);
@@ -109,9 +125,8 @@ languages.forEach(lang => {
     `<meta name="keywords" content="${lang.keywords}"`
   );
 
-  // 为每个路由生成 index.html
+  // 為每個路由生成 index.html
   routes.forEach(route => {
-    // 构建目标目录路径: dist/[lang]/[route]
     const routeDir = path.join(langBaseDir, route);
 
     if (!fs.existsSync(routeDir)) {
@@ -121,14 +136,73 @@ languages.forEach(lang => {
     const htmlPath = path.join(routeDir, 'index.html');
     fs.writeFileSync(htmlPath, langHtml, 'utf-8');
 
-    // 只显示根目录的生成日志，避免太吵
-    if (route === '') {
-      console.log(`   ✅ Created ${lang.path}/index.html`);
-    }
+    // 加入到 Sitemap URL 列表
+    // 如果是 root 路由，最後不加 '/' 以保持整潔 (或者統一加，這裡選擇標準化處理)
+    const fullUrl = route === ''
+      ? `${baseUrl}/${lang.path}`
+      : `${baseUrl}/${lang.path}/${route}`;
+
+    sitemapUrls.push({
+      loc: fullUrl,
+      lastmod: new Date().toISOString().split('T')[0],
+      changefreq: 'weekly',
+      priority: route === '' ? '1.0' : '0.8'
+    });
   });
 
   console.log(`   ✨ Generated ${routes.length} route files for ${lang.code}`);
 });
 
-console.log('\n✨ All language-specific HTML files generated successfully!\n');
-console.log('Each route (e.g., /en/faq) now has a corresponding index.html file.');
+// 2. 生成 Legacy Route Redirects
+console.log('\n🔄 Generating legacy redirects...');
+legacyRoutes.forEach(route => {
+  const routeDir = path.join(distPath, route.path);
+  if (!fs.existsSync(routeDir)) {
+    fs.mkdirSync(routeDir, { recursive: true });
+  }
+
+  // 創建一個簡單的 HTML 進行 Meta Refresh 重定向
+  const redirectHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="0; url=/${route.target}">
+    <link rel="canonical" href="${baseUrl}/${route.target}">
+    <title>Redirecting...</title>
+    <script>window.location.href = "/${route.target}"</script>
+</head>
+<body>
+    <p>Redirecting to <a href="/${route.target}">/${route.target}</a>...</p>
+</body>
+</html>`;
+
+  fs.writeFileSync(path.join(routeDir, 'index.html'), redirectHtml);
+  console.log(`   ↪️  Redirect: /${route.path} -> /${route.target}`);
+});
+
+// 3. 生成 Sitemap.xml
+console.log('\n🗺️  Generating sitemap.xml...');
+const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapUrls.map(url => `  <url>
+    <loc>${url.loc}</loc>
+    <lastmod>${url.lastmod}</lastmod>
+    <changefreq>${url.changefreq}</changefreq>
+    <priority>${url.priority}</priority>
+  </url>`).join('\n')}
+</urlset>`;
+
+fs.writeFileSync(path.join(distPath, 'sitemap.xml'), sitemapContent);
+console.log(`   ✅ sitemap.xml generated with ${sitemapUrls.length} URLs`);
+
+// 4. 生成 robots.txt
+console.log('\n🤖 Generating robots.txt...');
+const robotsContent = `User-agent: *
+Allow: /
+
+Sitemap: ${baseUrl}/sitemap.xml
+`;
+fs.writeFileSync(path.join(distPath, 'robots.txt'), robotsContent);
+console.log('   ✅ robots.txt generated');
+
+console.log('\n✨ All static files generation completed successfully!\n');

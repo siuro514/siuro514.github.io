@@ -1,6 +1,21 @@
 const fs = require('fs');
 const path = require('path');
 
+// 路由列表
+const routes = [
+  '', // root
+  'tools/gantt',
+  'tools/json-parser',
+  'tools/base64',
+  'tools/crypto',
+  'tools/image-compressor',
+  'about',
+  'privacy',
+  'terms',
+  'gantt-guide',
+  'faq'
+];
+
 // 语言配置
 const languages = [
   {
@@ -74,49 +89,46 @@ console.log('🌍 Generating language-specific HTML files...\n');
 
 // 为每种语言生成 HTML
 languages.forEach(lang => {
-  console.log(`📝 Generating ${lang.code} (${lang.path})...`);
-  
-  // 创建语言目录
-  const langDir = path.join(distPath, lang.path);
-  if (!fs.existsSync(langDir)) {
-    fs.mkdirSync(langDir, { recursive: true });
-  }
-  
-  // 替换 HTML 中的 SEO 标签
-  let html = templateHtml;
-  
-  // 替换 lang 属性
-  html = html.replace(/<html lang="[^"]*"/, `<html lang="${lang.htmlLang}"`);
-  
-  // 替换 title
-  html = html.replace(/<title>.*?<\/title>/, `<title>${lang.title}</title>`);
-  
-  // 替换 meta description
-  html = html.replace(
+  console.log(`📝 Processing language: ${lang.code} (${lang.path})`);
+
+  // 基础语言目录
+  const langBaseDir = path.join(distPath, lang.path);
+
+  // 替换 HTML 中的 SEO 标签 (基础替换)
+  // 注意：这只是为了解决 404 问题，让 Google 能够索引。
+  // 更详细的页面级 title/meta 仍然由客户端 React 代码在运行时更新。
+  let langHtml = templateHtml;
+  langHtml = langHtml.replace(/<html lang="[^"]*"/, `<html lang="${lang.htmlLang}"`);
+  langHtml = langHtml.replace(/<title>.*?<\/title>/, `<title>${lang.title}</title>`);
+  langHtml = langHtml.replace(
     /<meta name="description" content="[^"]*"/,
     `<meta name="description" content="${lang.description}"`
   );
-  
-  // 替换 meta keywords
-  html = html.replace(
+  langHtml = langHtml.replace(
     /<meta name="keywords" content="[^"]*"/,
     `<meta name="keywords" content="${lang.keywords}"`
   );
-  
-  // 写入文件
-  const htmlPath = path.join(langDir, 'index.html');
-  fs.writeFileSync(htmlPath, html, 'utf-8');
-  
-  console.log(`   ✅ Created ${lang.path}/index.html`);
+
+  // 为每个路由生成 index.html
+  routes.forEach(route => {
+    // 构建目标目录路径: dist/[lang]/[route]
+    const routeDir = path.join(langBaseDir, route);
+
+    if (!fs.existsSync(routeDir)) {
+      fs.mkdirSync(routeDir, { recursive: true });
+    }
+
+    const htmlPath = path.join(routeDir, 'index.html');
+    fs.writeFileSync(htmlPath, langHtml, 'utf-8');
+
+    // 只显示根目录的生成日志，避免太吵
+    if (route === '') {
+      console.log(`   ✅ Created ${lang.path}/index.html`);
+    }
+  });
+
+  console.log(`   ✨ Generated ${routes.length} route files for ${lang.code}`);
 });
 
 console.log('\n✨ All language-specific HTML files generated successfully!\n');
-console.log('📁 Structure:');
-languages.forEach(lang => {
-  console.log(`   - dist/${lang.path}/index.html (${lang.code})`);
-});
-console.log('\n🔗 URLs:');
-languages.forEach(lang => {
-  console.log(`   - https://ganttleman.com/${lang.path}/ (${lang.code})`);
-});
-
+console.log('Each route (e.g., /en/faq) now has a corresponding index.html file.');

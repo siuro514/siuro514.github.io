@@ -18,7 +18,7 @@ const TASK_COLORS = [
   '#E8D5C4', '#F5E6D3', '#FFF4E0', '#E8F5E9', '#E3F2FD', '#F3E5F5', '#FCE4EC',
   '#D4C5B9', '#E8D7C3', '#FFE4B5', '#C8E6C9', '#B3E5FC', '#E1BEE7', '#F8BBD0',
   '#C9B8A8', '#DCC9B0', '#FFD89C', '#A5D6A7', '#81D4FA', '#CE93D8', '#F48FB1',
-  
+
   // 暗色系 (3x7)
   '#8D7B68', '#A68A6A', '#B8956A', '#7D9D7F', '#6B8E9E', '#8B7E99', '#A97D88',
   '#6E5D4E', '#8A6F50', '#9A7750', '#5F7D5F', '#4A6B7C', '#6A5B7A', '#8B5E6B',
@@ -68,11 +68,11 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
         setIsNarrow(width < 150);
       };
       checkWidth();
-      
+
       // 使用 ResizeObserver 監聽寬度變化
       const resizeObserver = new ResizeObserver(checkWidth);
       resizeObserver.observe(cardRef.current);
-      
+
       return () => resizeObserver.disconnect();
     }
   }, [task.width]);
@@ -187,7 +187,7 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
     startWidthRef.current = task.width;
     finalStartXRef.current = task.startX;
     finalWidthRef.current = task.width;
-    
+
     // 獲取父元素 Box 的引用（用於直接操作 DOM）
     if (cardRef.current) {
       parentBoxRef.current = cardRef.current.parentElement;
@@ -212,7 +212,7 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
         const newStartX = Math.max(0, startPositionRef.current + deltaX);
         const deltaPosition = newStartX - startPositionRef.current;
         const newWidth = Math.max(50, startWidthRef.current - deltaPosition);
-        
+
         parentBoxRef.current.style.left = `${Math.max(8, newStartX)}px`;
         parentBoxRef.current.style.width = `${newWidth}px`;
         finalStartXRef.current = newStartX;
@@ -226,17 +226,17 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
         parentBoxRef.current.style.width = '';
         parentBoxRef.current.style.left = '';
       }
-      
+
       // 只在 mouseup 時調用一次 updateTask，這樣會被記錄到歷史
       if (resizeDirection === 'right') {
         updateTask(task.id, { width: finalWidthRef.current });
       } else if (resizeDirection === 'left') {
-        updateTask(task.id, { 
-          startX: finalStartXRef.current, 
-          width: finalWidthRef.current 
+        updateTask(task.id, {
+          startX: finalStartXRef.current,
+          width: finalWidthRef.current
         });
       }
-      
+
       setIsResizing(false);
       setResizeDirection(null);
       parentBoxRef.current = null;
@@ -282,18 +282,19 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
         position: 'relative',
         backgroundColor: task.backgroundColor || 'background.paper',
         willChange: actualIsDragging ? 'transform' : 'auto',
+        ...((task.width && task.width <= 1) ? { display: 'none' } : {}), // Safety for export
       }}
       {...attributes}
       {...listeners}
     >
-      <CardContent 
+      <CardContent
         onPointerDown={(e) => {
           // 在 CardContent 上阻止拖拽的指针事件，让点击和编辑正常工作
           e.stopPropagation();
         }}
-        sx={{ 
-          p: 1.5, 
-          '&:last-child': { pb: 1.5 }, 
+        sx={{
+          p: 1.5,
+          '&:last-child': { pb: 1.5 },
           height: '100%',
           display: 'flex',
           alignItems: 'center',
@@ -561,13 +562,13 @@ export default function TaskCard({ task, isDragging = false }: TaskCardProps) {
                   borderRadius: 1.5,
                   cursor: 'pointer',
                   transition: 'all 0.2s',
-                  backgroundImage: task.backgroundColor === color 
+                  backgroundImage: task.backgroundColor === color
                     ? `linear-gradient(${color}, ${color}), linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%)`
                     : 'none',
                   backgroundOrigin: 'border-box',
                   backgroundClip: task.backgroundColor === color ? 'padding-box, border-box' : 'padding-box',
-                  boxShadow: task.backgroundColor === color 
-                    ? '0 0 12px rgba(102, 126, 234, 0.4), 0 0 24px rgba(118, 75, 162, 0.2)' 
+                  boxShadow: task.backgroundColor === color
+                    ? '0 0 12px rgba(102, 126, 234, 0.4), 0 0 24px rgba(118, 75, 162, 0.2)'
                     : 'none',
                   '&:hover': {
                     transform: 'scale(1.15)',

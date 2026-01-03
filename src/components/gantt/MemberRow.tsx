@@ -1,4 +1,4 @@
-import { Box, IconButton, Tooltip } from '@mui/material';
+import { Box, IconButton, Tooltip, Checkbox } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import AddIcon from '@mui/icons-material/Add';
@@ -29,6 +29,13 @@ export default function MemberRow({ member, memberIndex, onAddMember }: MemberRo
   const deleteMember = useGanttStore((state) => state.deleteMember);
   const tasks = useGanttStore((state) => state.tasks);
 
+  const selectedMembers = useGanttStore((state) => state.selectedMembers);
+  const selectedSprints = useGanttStore((state) => state.selectedSprints);
+  const toggleMemberSelection = useGanttStore((state) => state.toggleMemberSelection);
+  const isExporting = useGanttStore((state) => state.isExporting);
+
+  const isSelected = selectedMembers?.[member.id] ?? true;
+
   const {
     attributes,
     listeners,
@@ -41,11 +48,11 @@ export default function MemberRow({ member, memberIndex, onAddMember }: MemberRo
   const { setNodeRef: setDroppableRef } = useDroppable({
     id: `member-row-${member.id}`,
   });
-  
+
   // 使用 DndContext 來檢測當前拖曳是否在這個 member 上
   const { over } = useDndContext();
   const isOverThisMember = over && (
-    over.id === `member-row-${member.id}` || 
+    over.id === `member-row-${member.id}` ||
     over.id === `member-${member.id}`
   );
 
@@ -54,6 +61,19 @@ export default function MemberRow({ member, memberIndex, onAddMember }: MemberRo
     transition,
     opacity: isDragging ? 0.5 : 1,
   };
+
+  if (isExporting && !isSelected) {
+    // 即使隱藏，也必須保留 setNodeRef，避免 dnd-kit 找不到 ref 而崩潰
+    // 使用 display: none 來隱藏，但保留 DOM 節點
+    return (
+      <Box
+        ref={setSortableRef}
+        sx={{ display: 'none' }}
+      >
+        <Box ref={setDroppableRef} />
+      </Box>
+    );
+  }
 
   const handleNameChange = (newName: string) => {
     updateMember(member.id, { name: newName });
@@ -65,18 +85,70 @@ export default function MemberRow({ member, memberIndex, onAddMember }: MemberRo
 
   const sortedSprints = [...sprints].sort((a, b) => a.order - b.order);
   const SPRINT_WIDTH = 187.5; // 每個 Sprint 的固定寬度
-  const totalWidth = sortedSprints.length * SPRINT_WIDTH;
+
+  // 過濾出可見的 Sprints (用於背景渲染)
+  const filteredSprints = isExporting
+    ? sortedSprints.filter(s => selectedSprints?.[s.id] ?? true)
+    : sortedSprints;
+
+  const totalWidth = filteredSprints.length * SPRINT_WIDTH;
+
+  // 計算座標映射
+  // 將原始絕對座標 (originalX) 轉換為匯出模式下的視覺座標
+  // 計算座標映射
+  // 將原始絕對座標 (originalX) 轉換為匯出模式下的視覺座標
+  const mapX = (originalX: number): number => {
+    if (!isExporting || typeof originalX !== 'number' || isNaN(originalX)) return originalX || 0;
+
+    let visualX = 0;
+
+    // 遍歷所有 sprint，累加可見部分的寬度
+    for (let i = 0; i < sortedSprints.length; i++) {
+      const sprint = sortedSprints[i];
+      const sprintStart = i * SPRINT_WIDTH;
+      const sprintEnd = (i + 1) * SPRINT_WIDTH;
+      const isSprintSelected = selectedSprints?.[sprint.id] ?? true;
+
+      // 如果當前點在這個 sprint 之前，我們已經計算完了
+      if (originalX < sprintStart) {
+        break;
+      }
+
+      // 如果當前點在這個 sprint 之內
+      if (originalX >= sprintStart && originalX < sprintEnd) {
+        if (isSprintSelected) {
+          // 如果選取，加上在這個 sprint 內的偏移量
+          visualX += (originalX - sprintStart);
+        }
+        // 如果未選取，visualX 不增加（collapsed）
+        break;
+      }
+
+      // 如果當前點在這個 sprint 之後，且該 sprint 被選取，則累加其寬度
+      if (isSprintSelected) {
+        visualX += SPRINT_WIDTH;
+      }
+    }
+
+    // 處理超過最後一個 sprint 的情況
+    if (originalX >= sortedSprints.length * SPRINT_WIDTH) {
+      const extra = originalX - sortedSprints.length * SPRINT_WIDTH;
+      visualX += extra;
+    }
+
+    return visualX;
+  };
 
   // 計算此 member 需要的最大行數
   const memberTasks = tasks.filter((t) => t.memberId === member.id);
-  const maxRowIndex = memberTasks.length > 0 
-    ? Math.max(...memberTasks.map((t) => t.rowIndex)) + 1 
+  const maxRowIndex = memberTasks.length > 0
+    ? Math.max(...memberTasks.map((t) => t.rowIndex)) + 1
     : 1;
   const rowHeight = Math.max(66, 12 + maxRowIndex * 54); // 上padding 12px + 行數 * (卡片高度42px + 間距12px)
 
   return (
     <Box
-      ref={(node) => {
+      ref={(node: HTMLElement | null) => {
         setSortableRef(node);
       }}
       style={style}
@@ -117,7 +189,21 @@ export default function MemberRow({ member, memberIndex, onAddMember }: MemberRo
         }}
       >
         {/* 中間名稱區域 */}
-        <Box sx={{ textAlign: 'center' }}>
+        <Box sx={{ textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+          <Checkbox
+            size="small"
+            checked={isSelected}
+            onChange={(e) => toggleMemberSelection(member.id, e.target.checked)}
+            sx={{
+              p: 0,
+              color: 'text.disabled',
+              '&.Mui-checked': {
+                color: 'primary.main',
+              },
+              // 防止在匯出時顯示未選中的 checkbox
+              display: isExporting ? 'none' : 'inline-flex',
+            }}
+          />
           <EditableText
             value={member.name}
             onChange={handleNameChange}
@@ -301,7 +387,7 @@ export default function MemberRow({ member, memberIndex, onAddMember }: MemberRo
           }}
         >
           {/* 渲染 Sprint 背景格子 */}
-          {sortedSprints.map((sprint, index) => (
+          {filteredSprints.map((sprint, index) => (
             <Box
               key={sprint.id}
               sx={{
@@ -319,23 +405,38 @@ export default function MemberRow({ member, memberIndex, onAddMember }: MemberRo
           ))}
 
           {/* 渲染任務卡片 - 使用絕對定位 */}
-          {memberTasks.map((task) => (
-            <Box
-              key={task.id}
-              sx={{
-                position: 'absolute',
-                left: Math.max(8, task.startX), // 最小左邊距 8px
-                top: task.rowIndex * 54 + 12, // 每行間距 54px (卡片42px + 間距12px)，上 padding 12px
-                width: task.width,
-                zIndex: 1,
-                transition: 'none !important', // 强制禁用所有动画
-              }}
-            >
-              <TaskCard task={task} />
-            </Box>
-          ))}
+          {memberTasks.map((task) => {
+            let startX = task.startX;
+            let width = task.width;
+
+            if (isExporting) {
+              const newStart = mapX(task.startX);
+              const newEnd = mapX(task.startX + task.width);
+              width = newEnd - newStart;
+              startX = newStart;
+
+              // 如果寬度太小（被完全隱藏），則不渲染
+              if (width <= 1) return null;
+            }
+
+            return (
+              <Box
+                key={task.id}
+                sx={{
+                  position: 'absolute',
+                  left: Math.max(8, startX), // 最小左邊距 8px
+                  top: task.rowIndex * 54 + 12, // 每行間距 54px (卡片42px + 間距12px)，上 padding 12px
+                  width: width,
+                  zIndex: 1,
+                  transition: 'none !important', // 强制禁用所有动画
+                }}
+              >
+                <TaskCard task={{ ...task, width }} />
+              </Box>
+            )
+          })}
         </Box>
-        
+
         {/* 右側空白區域 - 方便操作 add sprint */}
         {sortedSprints.length > 0 && (
           <Box

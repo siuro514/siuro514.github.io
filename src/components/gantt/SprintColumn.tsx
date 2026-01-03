@@ -1,4 +1,4 @@
-import { Box, IconButton, Tooltip } from '@mui/material';
+import { Box, IconButton, Tooltip, Checkbox } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -24,6 +24,16 @@ export default function SprintColumn({ sprint, sprintIndex, onAddSprint }: Sprin
   const [isEditingDate, setIsEditingDate] = useState(false);
   const updateSprint = useGanttStore((state) => state.updateSprint);
   const deleteSprint = useGanttStore((state) => state.deleteSprint);
+
+  const selectedSprints = useGanttStore((state) => state.selectedSprints);
+  const toggleSprintSelection = useGanttStore((state) => state.toggleSprintSelection);
+  const isExporting = useGanttStore((state) => state.isExporting);
+
+  const isSelected = selectedSprints?.[sprint.id] ?? true;
+
+  if (isExporting && !isSelected) {
+    return <Box sx={{ display: 'none' }} />;
+  }
 
   const handleTitleChange = (newTitle: string) => {
     updateSprint(sprint.id, { title: newTitle });
@@ -67,7 +77,21 @@ export default function SprintColumn({ sprint, sprintIndex, onAddSprint }: Sprin
       }}
     >
       {/* 標題 */}
-      <Box sx={{ mb: 0, textAlign: 'center' }}>
+      <Box sx={{ mb: 0, textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
+        <Checkbox
+          size="small"
+          checked={isSelected}
+          onChange={(e) => toggleSprintSelection(sprint.id, e.target.checked)}
+          sx={{
+            p: 0,
+            color: 'text.disabled',
+            '&.Mui-checked': {
+              color: 'primary.main',
+            },
+            // 防止在匯出時顯示未選中的 checkbox (實際上如果未選中，整個 SprintColumn 會被隱藏，但為了安全起見)
+            display: isExporting ? 'none' : 'inline-flex',
+          }}
+        />
         <EditableText
           value={sprint.title}
           onChange={handleTitleChange}
@@ -138,7 +162,7 @@ export default function SprintColumn({ sprint, sprintIndex, onAddSprint }: Sprin
           }}
         >
           <ColorPicker currentColor={sprint.color} onColorChange={handleColorChange} />
-          
+
           <Tooltip title={t('gantt.sprint.delete')}>
             <IconButton
               size="small"

@@ -31,6 +31,11 @@ export interface GanttState {
   tasks: Task[];
   projectTitle: string;
   primaryColor: string;
+
+  // Export Selection State
+  selectedSprints?: Record<string, boolean>; // id -> isSelected. undefined/missing implies true
+  selectedMembers?: Record<string, boolean>; // id -> isSelected. undefined/missing implies true
+  isExporting?: boolean; // controls render mode
 }
 
 export interface OverlapCheckResult {

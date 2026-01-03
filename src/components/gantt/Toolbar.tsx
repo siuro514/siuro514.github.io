@@ -21,7 +21,7 @@ import { useTranslation } from 'react-i18next';
 export default function Toolbar() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { exportData, loadData, projectTitle, updateProjectTitle, tasks } = useGanttStore();
+  const { exportData, loadData, projectTitle, updateProjectTitle, tasks, setIsExporting } = useGanttStore();
   const [canUndo, setCanUndo] = useState(false);
   const [canRedo, setCanRedo] = useState(false);
   const [clearDialogOpen, setClearDialogOpen] = useState(false);
@@ -41,7 +41,7 @@ export default function Toolbar() {
     const unsubscribeMain = useGanttStore.subscribe(updateUndoRedoState);
     // 訂閱 temporal store 變化
     const unsubscribeTemporal = useGanttStore.temporal.subscribe(updateUndoRedoState);
-    
+
     return () => {
       unsubscribeMain();
       unsubscribeTemporal();
@@ -61,7 +61,7 @@ export default function Toolbar() {
     // 重置到初始狀態，包含一個預設 Sprint 和 Member
     const now = new Date();
     const twoWeeksLater = new Date(now.getTime() + 14 * 24 * 60 * 60 * 1000);
-    
+
     // 暫停歷史記錄，避免清空操作記錄到 undo 歷史
     useGanttStore.temporal.getState().pause();
     loadData({
@@ -92,41 +92,46 @@ export default function Toolbar() {
     setClearDialogOpen(false);
   };
 
+
+
   const handleExportPNG = async () => {
     const scrollContainer = document.getElementById('gantt-scroll-container');
     const boardElement = document.getElementById('gantt-board');
     if (!scrollContainer || !boardElement) return;
 
     try {
+      // 開啟導出模式 (這會觸發 UI 隱藏和座標重算)
+      setIsExporting(true);
+
       // 保存原始狀態
       const originalOverflow = scrollContainer.style.overflow;
       const originalMaxHeight = scrollContainer.style.maxHeight;
       const originalFlex = scrollContainer.style.flex;
       const originalBoardHeight = boardElement.style.height;
       const originalBoardWidth = boardElement.style.width;
-      
-      // 添加導出模式的 data attribute，用於隱藏操作按鈕
+
+      // 添加導出模式的 data attribute
       boardElement.setAttribute('data-exporting', 'true');
-      
-      // 暫時移除所有限制，讓所有內容完全展開（包含橫向）
+
+      // 暫時移除所有限制
       scrollContainer.style.overflow = 'visible';
       scrollContainer.style.maxHeight = 'none';
       scrollContainer.style.flex = 'none';
       boardElement.style.height = 'auto';
       boardElement.style.width = 'auto';
-      
-      // 等待 DOM 更新
-      await new Promise(resolve => setTimeout(resolve, 300));
+
+      // 等待 DOM 更新 (React 渲染需要時間)
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       // 獲取整個 board 的實際尺寸（包含所有橫向滾動的 sprint）
       const actualHeight = boardElement.scrollHeight;
       const actualWidth = boardElement.scrollWidth;
 
-      console.log('Export dimensions:', { 
-        actualWidth, 
+      console.log('Export dimensions:', {
+        actualWidth,
         actualHeight,
         scrollWidth: scrollContainer.scrollWidth,
-        scrollHeight: scrollContainer.scrollHeight 
+        scrollHeight: scrollContainer.scrollHeight
       });
 
       const canvas = await html2canvas(boardElement, {
@@ -158,10 +163,11 @@ export default function Toolbar() {
       link.click();
     } catch (error) {
       console.error('Failed to export PNG:', error);
-      
+    } finally {
       // 確保恢復原始狀態
       const scrollContainer = document.getElementById('gantt-scroll-container');
       const boardElement = document.getElementById('gantt-board');
+
       if (scrollContainer) {
         scrollContainer.style.overflow = 'auto';
         scrollContainer.style.maxHeight = '';
@@ -172,6 +178,8 @@ export default function Toolbar() {
         boardElement.style.height = '';
         boardElement.style.width = '';
       }
+
+      setIsExporting(false);
     }
   };
 
@@ -181,23 +189,25 @@ export default function Toolbar() {
     if (!scrollContainer || !boardElement) return;
 
     try {
+      setIsExporting(true);
+
       // 保存原始狀態
       const originalOverflow = scrollContainer.style.overflow;
       const originalMaxHeight = scrollContainer.style.maxHeight;
       const originalFlex = scrollContainer.style.flex;
       const originalBoardHeight = boardElement.style.height;
       const originalBoardWidth = boardElement.style.width;
-      
+
       // 添加導出模式
       boardElement.setAttribute('data-exporting', 'true');
-      
+
       // 暫時移除所有限制
       scrollContainer.style.overflow = 'visible';
       scrollContainer.style.maxHeight = 'none';
       scrollContainer.style.flex = 'none';
       boardElement.style.height = 'auto';
       boardElement.style.width = 'auto';
-      
+
       // 等待 DOM 更新
       await new Promise(resolve => setTimeout(resolve, 300));
 
@@ -214,7 +224,7 @@ export default function Toolbar() {
             const taskElement = taskElements[0] as HTMLElement;
             const rect = taskElement.getBoundingClientRect();
             const boardRect = boardElement.getBoundingClientRect();
-            
+
             taskLinks.push({
               x: rect.left - boardRect.left,
               y: rect.top - boardRect.top,
@@ -270,7 +280,7 @@ export default function Toolbar() {
       pdf.save(`gantt-${Date.now()}.pdf`);
     } catch (error) {
       console.error('Failed to export PDF:', error);
-      
+    } finally {
       // 確保恢復原始狀態
       const scrollContainer = document.getElementById('gantt-scroll-container');
       const boardElement = document.getElementById('gantt-board');
@@ -284,6 +294,8 @@ export default function Toolbar() {
         boardElement.style.height = '';
         boardElement.style.width = '';
       }
+
+      setIsExporting(false);
     }
   };
 
@@ -327,6 +339,8 @@ export default function Toolbar() {
               tasks: data.tasks,
               projectTitle: data.projectTitle || t('gantt.defaults.projectTitle'),
               primaryColor: data.primaryColor || '#6750A4',
+              selectedSprints: data.selectedSprints || {},
+              selectedMembers: data.selectedMembers || {},
             });
             // 清空 undo/redo 歷史，從導入的狀態開始
             useGanttStore.temporal.getState().clear();
@@ -348,8 +362,8 @@ export default function Toolbar() {
     <AppBar position="static" elevation={0} sx={{ backgroundColor: 'primary.main' }}>
       <MuiToolbar sx={{ flexWrap: 'wrap', gap: 1 }}>
         <Tooltip title={t('gantt.toolbar.back')}>
-          <IconButton 
-            color="inherit" 
+          <IconButton
+            color="inherit"
             onClick={() => navigate('/')}
             sx={{ mr: 1 }}
           >

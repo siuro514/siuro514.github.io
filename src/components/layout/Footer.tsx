@@ -8,7 +8,7 @@ export default function Footer() {
   const { t, i18n } = useTranslation();
   const { lang } = useParams<{ lang: string }>();
   const currentYear = new Date().getFullYear();
-  
+
   // 获取当前语言路径前缀
   const langPrefix = `/${lang || LANG_CODE_TO_PATH[i18n.language] || 'en'}`;
 
@@ -33,6 +33,9 @@ export default function Footer() {
             {t('footer.description')}
           </Typography>
           <Box sx={{ mt: 2 }}>
+            <Link to={langPrefix + '/blog'} style={{ color: 'inherit', textDecoration: 'none', margin: '0 8px', fontSize: '0.875rem' }}>
+              {t('nav.blog')}
+            </Link>
             <Link to={langPrefix + '/about'} style={{ color: 'inherit', textDecoration: 'none', margin: '0 8px', fontSize: '0.875rem' }}>
               {t('footer.links.about')}
             </Link>

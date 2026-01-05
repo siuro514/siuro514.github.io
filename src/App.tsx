@@ -20,6 +20,8 @@ import TermsPage from './pages/TermsPage';
 import AboutPage from './pages/AboutPage';
 import GanttGuidePage from './pages/GanttGuidePage';
 import FAQPage from './pages/FAQPage';
+import BlogPage from './pages/BlogPage';
+import BlogPostPage from './pages/BlogPostPage';
 
 // 组件用于设置页面标题和 SEO meta 标签
 function DocumentTitle() {
@@ -29,10 +31,10 @@ function DocumentTitle() {
   useEffect(() => {
     const baseTitle = t('site.title'); // Ganttleman
     const baseDescription = t('site.description');
-    
+
     // 设置 html lang 属性
     document.documentElement.lang = i18n.language;
-    
+
     // 页面标题映射
     const pathTitleMap: Record<string, string> = {
       '/tools/gantt': t('tools.gantt.name'),
@@ -45,6 +47,7 @@ function DocumentTitle() {
       '/terms': t('footer.terms'),
       '/gantt-guide': t('ganttGuide.title'),
       '/faq': t('faq.title'),
+      '/blog': t('blog.title', '部落格'),
     };
 
     // 页面描述映射
@@ -60,13 +63,14 @@ function DocumentTitle() {
       '/terms': t('terms.metaDescription'),
       '/gantt-guide': t('ganttGuide.description'),
       '/faq': t('faq.subtitle'),
+      '/blog': t('blog.subtitle', '分享關於技術、工具與效率的見解'),
     };
 
     // 设置页面标题
     const pageTitle = pathTitleMap[location.pathname];
-    document.title = location.pathname === '/' 
-      ? baseTitle 
-      : pageTitle 
+    document.title = location.pathname === '/'
+      ? baseTitle
+      : pageTitle
         ? `${pageTitle} - ${baseTitle}`
         : baseTitle;
 
@@ -130,14 +134,14 @@ function DocumentTitle() {
       'ko': 'ko',
       'es': 'es',
     };
-    
+
     // 从当前路径中移除语言前缀，获取基础路径
     const pathMatch = location.pathname.match(/^\/[^/]+(.*)$/);
     const basePath = pathMatch ? pathMatch[1] || '/' : '/';
-    
+
     // 移除旧的 hreflang 标签
     document.querySelectorAll('link[rel="alternate"]').forEach(link => link.remove());
-    
+
     // 为每种语言添加 hreflang 标签
     Object.entries(langPathMap).forEach(([langCode, langPath]) => {
       const link = document.createElement('link');
@@ -174,6 +178,8 @@ function LanguageRoutes() {
       <Route path="/terms" element={<><Navbar /><TermsPage /><Footer /></>} />
       <Route path="/gantt-guide" element={<><Navbar /><GanttGuidePage /><Footer /></>} />
       <Route path="/faq" element={<><Navbar /><FAQPage /><Footer /></>} />
+      <Route path="/blog" element={<BlogPage />} />
+      <Route path="/blog/:id" element={<BlogPostPage />} />
     </Routes>
   );
 }
@@ -266,7 +272,7 @@ function App() {
         if (!data.primaryColor) {
           data.primaryColor = '#6750A4';
         }
-        
+
         // 暫停歷史記錄，避免加載數據時記錄到 undo 歷史
         useGanttStore.temporal.getState().pause();
         loadData(data);
@@ -323,10 +329,10 @@ function App() {
             <Routes>
               {/* 根路径重定向到用户首选语言 */}
               <Route path="/" element={<RootRedirect />} />
-              
+
               {/* 所有语言版本的路由 */}
               <Route path="/:lang/*" element={<LanguageRouter><LanguageRoutes /></LanguageRouter>} />
-              
+
               {/* 旧路径重定向（兼容性） */}
               <Route path="/tools/gantt" element={<Navigate to="/en/tools/gantt" replace />} />
               <Route path="/tools/json-parser" element={<Navigate to="/en/tools/json-parser" replace />} />

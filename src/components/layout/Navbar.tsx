@@ -15,14 +15,14 @@ export default function Navbar({ customColor, onOffsetChange }: NavbarProps = {}
   const { t, i18n } = useTranslation();
   const location = useLocation();
   const { lang } = useParams<{ lang: string }>();
-  
+
   // 获取当前语言路径前缀
   const langPrefix = `/${lang || LANG_CODE_TO_PATH[i18n.language] || 'en'}`;
-  
+
   // 检查是否在首页（移除语言前缀后判断）
   const pathWithoutLang = location.pathname.replace(/^\/[^/]+/, '');
   const isHomePage = pathWithoutLang === '' || pathWithoutLang === '/';
-  
+
   const [scrolled, setScrolled] = useState(false);
   const [navbarOffset, setNavbarOffset] = useState(0);
 
@@ -51,7 +51,7 @@ export default function Navbar({ customColor, onOffsetChange }: NavbarProps = {}
 
       const deltaY = e.deltaY;
       const currentScroll = ganttScrollContainer.scrollTop;
-      
+
       // 向下滚动
       if (deltaY > 0) {
         if (currentNavbarOffset < NAVBAR_HEIGHT) {
@@ -88,18 +88,18 @@ export default function Navbar({ customColor, onOffsetChange }: NavbarProps = {}
   const useCustomColor = !!customColor;
 
   return (
-    <AppBar 
+    <AppBar
       position={(isHomePage || useCustomColor) ? 'fixed' : 'sticky'}
-      elevation={0} 
-      sx={{ 
+      elevation={0}
+      sx={{
         backgroundColor: useCustomColor
           ? 'rgba(58, 58, 58, 0.85)' // 铁灰色系毛玻璃背景
-          : (useLightText 
-            ? 'rgba(42, 42, 42, 0.6)' 
+          : (useLightText
+            ? 'rgba(42, 42, 42, 0.6)'
             : 'rgba(255, 255, 255, 0.9)'),
         backdropFilter: 'blur(20px)',
-        borderBottom: useLightText 
-          ? '1px solid rgba(212, 175, 55, 0.2)' 
+        borderBottom: useLightText
+          ? '1px solid rgba(212, 175, 55, 0.2)'
           : '1px solid rgba(0, 0, 0, 0.08)',
         transform: useCustomColor ? `translateY(-${navbarOffset + (navbarOffset > 0 ? 1 : 0)}px)` : 'none',
         transition: 'background-color 0.3s ease, border-bottom 0.3s ease',
@@ -108,9 +108,9 @@ export default function Navbar({ customColor, onOffsetChange }: NavbarProps = {}
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ minHeight: '70px', py: 1 }}>
           <Link to={langPrefix + '/'} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center' }}>
-            <Box sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
+            <Box sx={{
+              display: 'flex',
+              alignItems: 'center',
               gap: 1.5,
               transition: 'transform 0.2s',
               '&:hover': {
@@ -124,25 +124,25 @@ export default function Navbar({ customColor, onOffsetChange }: NavbarProps = {}
                 width: 28,
                 height: 28,
                 borderRadius: 2,
-                background: useLightText 
-                  ? 'linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(255, 215, 0, 0.15) 100%)' 
+                background: useLightText
+                  ? 'linear-gradient(135deg, rgba(212, 175, 55, 0.2) 0%, rgba(255, 215, 0, 0.15) 100%)'
                   : 'linear-gradient(135deg, #3a3a3a 0%, #4a4a4a 100%)',
                 backdropFilter: 'blur(10px)',
-                boxShadow: useLightText 
-                  ? '0 4px 14px rgba(212, 175, 55, 0.2)' 
+                boxShadow: useLightText
+                  ? '0 4px 14px rgba(212, 175, 55, 0.2)'
                   : '0 4px 14px rgba(0, 0, 0, 0.3)',
-                border: useLightText 
-                  ? '1px solid rgba(212, 175, 55, 0.3)' 
+                border: useLightText
+                  ? '1px solid rgba(212, 175, 55, 0.3)'
                   : '1px solid rgba(212, 175, 55, 0.5)',
                 transition: 'all 0.3s ease',
               }}>
-                <BoltIcon sx={{ 
+                <BoltIcon sx={{
                   color: '#d4af37', // 始終使用品牌金色
-                  fontSize: '1rem' 
+                  fontSize: '1rem'
                 }} />
               </Box>
-              <Typography variant="h6" sx={{ 
-                fontWeight: 700, 
+              <Typography variant="h6" sx={{
+                fontWeight: 700,
                 fontFamily: '"Inter", "Noto Sans TC", -apple-system, sans-serif',
                 color: useLightText ? 'white' : 'text.primary',
                 fontSize: '1.25rem',
@@ -155,24 +155,41 @@ export default function Navbar({ customColor, onOffsetChange }: NavbarProps = {}
             </Box>
           </Link>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ 
-            display: 'flex', 
-            gap: 1, 
+          <Box sx={{
+            display: 'flex',
+            gap: 1,
             alignItems: 'center',
             color: useLightText ? 'white' : 'text.primary',
             transition: 'all 0.3s ease',
           }}>
-                 <Button 
-                   component={Link} 
-                   to={langPrefix + '/about'}
-              sx={{ 
+            <Button
+              component={Link}
+              to={langPrefix + '/blog'}
+              sx={{
                 color: 'inherit',
                 fontWeight: 500,
                 px: 2,
                 transition: 'all 0.3s ease',
                 '&:hover': {
-                  backgroundColor: useLightText 
-                    ? 'rgba(212, 175, 55, 0.15)' 
+                  backgroundColor: useLightText
+                    ? 'rgba(212, 175, 55, 0.15)'
+                    : 'rgba(212, 175, 55, 0.08)',
+                },
+              }}
+            >
+              {t('nav.blog')}
+            </Button>
+            <Button
+              component={Link}
+              to={langPrefix + '/about'}
+              sx={{
+                color: 'inherit',
+                fontWeight: 500,
+                px: 2,
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  backgroundColor: useLightText
+                    ? 'rgba(212, 175, 55, 0.15)'
                     : 'rgba(212, 175, 55, 0.08)',
                 },
               }}

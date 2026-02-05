@@ -15,7 +15,8 @@ export default function BlogPostPage() {
     const { t, i18n } = useTranslation();
     const langPrefix = lang ? `/${lang}` : '/en';
 
-    const post = id ? getBlogPost(id, i18n.language) : undefined;
+    const currentLang = lang || i18n.language;
+    const post = id ? getBlogPost(id, currentLang) : undefined;
 
     useEffect(() => {
         if (post) {
@@ -37,7 +38,7 @@ export default function BlogPostPage() {
                         Article not found
                     </Typography>
                     <Button startIcon={<ArrowBackIcon />} onClick={() => navigate(`${langPrefix}/blog`)}>
-                        {t('blog.backToBlog', '回到部落格')}
+                        {t('blog.backToBlog', 'Back to Blog')}
                     </Button>
                 </Container>
                 <Footer />
@@ -55,7 +56,7 @@ export default function BlogPostPage() {
                     onClick={() => navigate(`${langPrefix}/blog`)}
                     sx={{ mb: 4 }}
                 >
-                    {t('blog.backToBlog', '回到部落格')}
+                    {t('blog.backToBlog', 'Back to Blog')}
                 </Button>
 
                 <Paper elevation={0} sx={{ p: { xs: 3, md: 5 }, borderRadius: 4, bgcolor: '#fff' }}>

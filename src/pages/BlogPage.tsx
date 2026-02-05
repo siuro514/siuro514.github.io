@@ -12,7 +12,9 @@ export default function BlogPage() {
     const langPrefix = lang ? `/${lang}` : '/en';
 
     // Get posts based on current language
-    const posts = getBlogPosts(i18n.language);
+    // Prioritize URL param, fallback to i18n.language
+    const currentLang = lang || i18n.language;
+    const posts = getBlogPosts(currentLang);
 
     return (
         <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
@@ -38,25 +40,26 @@ export default function BlogPage() {
                             mb: 2,
                             textShadow: '0 4px 20px rgba(0,0,0,0.2)',
                         }}
-                    >
-                        {t('blog.title', '部落格')}
-                    </Typography>
-                    <Typography
-                        variant="h5"
-                        sx={{
-                            fontWeight: 500,
-                            fontFamily: '"Noto Sans TC", "Inter", -apple-system, sans-serif',
-                            opacity: 0.95,
-                            maxWidth: 600,
-                            mx: 'auto',
                         }}
                     >
-                        {t('blog.subtitle', '分享關於技術、工具與效率的見解')}
-                    </Typography>
-                </Container>
-            </Box>
+                    {t('blog.title', 'Blog')}
+                </Typography>
+                <Typography
+                    variant="h5"
+                    sx={{
+                        fontWeight: 500,
+                        fontFamily: '"Noto Sans TC", "Inter", -apple-system, sans-serif',
+                        opacity: 0.95,
+                        maxWidth: 600,
+                        mx: 'auto',
+                    }}
+                >
+                    {t('blog.subtitle', 'Sharing insights on technology, tools, and productivity')}
+                </Typography>
+            </Container>
+        </Box>
 
-            {/* Blog List Section */}
+            {/* Blog List Section */ }
             <Container maxWidth="lg" sx={{ flexGrow: 1, py: 8 }}>
                 <Grid container spacing={4}>
                     {posts.map((post) => (
@@ -105,7 +108,7 @@ export default function BlogPage() {
                                     </Typography>
 
                                     <Box sx={{ display: 'flex', alignItems: 'center', color: 'primary.main', fontWeight: 600, mt: 'auto' }}>
-                                        {t('blog.readMore', '閱讀更多')}
+                                        {t('blog.readMore', 'Read More')}
                                         <ArrowForwardIcon sx={{ ml: 1, fontSize: 18 }} />
                                     </Box>
                                 </CardActionArea>
@@ -116,6 +119,6 @@ export default function BlogPage() {
             </Container>
 
             <Footer />
-        </Box>
+        </Box >
     );
 }

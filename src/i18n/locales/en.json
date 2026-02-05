@@ -9,6 +9,12 @@
     "about": "About",
     "blog": "Blog"
   },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Sharing insights on technology, tools, and productivity",
+    "readMore": "Read More",
+    "backToBlog": "Back to Blog"
+  },
   "hero": {
     "title": "Ganttleman",
     "subtitle": "Your Productivity Assistant · Free Online Tools Collection",
@@ -503,16 +509,16 @@
       "moreActions": "More Actions",
       "clearColor": "Clear Color",
       "editLink": "Edit Link",
-        "linkDialog": {
-          "title": "Set Hyperlink",
-          "urlLabel": "URL",
-          "urlPlaceholder": "https://example.com",
-          "clearLink": "Clear Link",
-          "cancel": "Cancel",
-          "confirm": "Confirm"
-        },
-        "copySuffix": "(copy)"
+      "linkDialog": {
+        "title": "Set Hyperlink",
+        "urlLabel": "URL",
+        "urlPlaceholder": "https://example.com",
+        "clearLink": "Clear Link",
+        "cancel": "Cancel",
+        "confirm": "Confirm"
       },
+      "copySuffix": "(copy)"
+    },
     "add": "Add"
   },
   "ganttGuide": {

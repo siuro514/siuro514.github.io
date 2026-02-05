@@ -9,6 +9,12 @@
     "about": "概要",
     "blog": "ブログ"
   },
+  "blog": {
+    "title": "ブログ",
+    "subtitle": "技術、ツール、効率に関する洞察を共有",
+    "readMore": "続きを読む",
+    "backToBlog": "ブログに戻る"
+  },
   "hero": {
     "title": "Ganttleman",
     "subtitle": "あなたの生産性アシスタント · 無料オンラインツール集",
@@ -437,16 +443,16 @@
       "moreActions": "その他の操作",
       "clearColor": "色をクリア",
       "editLink": "リンクを編集",
-        "linkDialog": {
-          "title": "ハイパーリンクを設定",
-          "urlLabel": "URL",
-          "urlPlaceholder": "https://example.com",
-          "clearLink": "リンクをクリア",
-          "cancel": "キャンセル",
-          "confirm": "確認"
-        },
-        "copySuffix": "(コピー)"
+      "linkDialog": {
+        "title": "ハイパーリンクを設定",
+        "urlLabel": "URL",
+        "urlPlaceholder": "https://example.com",
+        "clearLink": "リンクをクリア",
+        "cancel": "キャンセル",
+        "confirm": "確認"
       },
+      "copySuffix": "(コピー)"
+    },
     "add": "追加"
   },
   "crypto": {

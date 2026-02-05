@@ -9,6 +9,12 @@
     "about": "关于",
     "blog": "文章"
   },
+  "blog": {
+    "title": "博客",
+    "subtitle": "分享关于技术、工具与效率的见解",
+    "readMore": "阅读更多",
+    "backToBlog": "回到博客"
+  },
   "hero": {
     "title": "Ganttleman",
     "subtitle": "你的效率助手 · 免费在线工具集合",
@@ -503,16 +509,16 @@
       "moreActions": "更多操作",
       "clearColor": "清除颜色",
       "editLink": "编辑链接",
-        "linkDialog": {
-          "title": "设置超链接",
-          "urlLabel": "网址",
-          "urlPlaceholder": "https://example.com",
-          "clearLink": "清除链接",
-          "cancel": "取消",
-          "confirm": "确定"
-        },
-        "copySuffix": "(副本)"
+      "linkDialog": {
+        "title": "设置超链接",
+        "urlLabel": "网址",
+        "urlPlaceholder": "https://example.com",
+        "clearLink": "清除链接",
+        "cancel": "取消",
+        "confirm": "确定"
       },
+      "copySuffix": "(副本)"
+    },
     "add": "新增"
   },
   "ganttGuide": {

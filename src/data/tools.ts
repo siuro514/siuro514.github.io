@@ -5,6 +5,7 @@ export interface Tool {
   icon: string;
   path: string;
   color: string;
+  externalUrl?: string;
 }
 
 export const tools: Tool[] = [
@@ -47,6 +48,15 @@ export const tools: Tool[] = [
     icon: 'Lock',
     path: '/tools/crypto',
     color: '#E67455',
+  },
+  {
+    id: 'subtitler',
+    name: '影片字幕編輯器',
+    description: '在瀏覽器中為影片加上字幕與浮水印，並直接匯出帶字幕的 MP4 檔案',
+    icon: 'Subtitles',
+    path: '/subtitler/',
+    color: '#C77FBA',
+    externalUrl: 'https://ganttleman.com/subtitler/',
   },
 ];
 

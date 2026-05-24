@@ -48,6 +48,10 @@
     "crypto": {
       "name": "암호화/복호화 도구",
       "description": "AES, DES, 3DES, RC4, Rabbit 알고리즘을 사용한 안전한 텍스트 암호화 및 복호화"
+    },
+    "subtitler": {
+      "name": "동영상 자막 편집기",
+      "description": "브라우저에서 동영상에 자막과 워터마크를 추가하고 자막이 포함된 MP4 파일을 직접 내보내세요"
     }
   },
   "features": {

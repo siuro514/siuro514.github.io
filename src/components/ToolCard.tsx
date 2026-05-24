@@ -8,6 +8,7 @@ import DataObjectIcon from '@mui/icons-material/DataObject';
 import LockIcon from '@mui/icons-material/Lock';
 import ImageIcon from '@mui/icons-material/Image';
 import SecurityIcon from '@mui/icons-material/Security';
+import SubtitlesIcon from '@mui/icons-material/Subtitles';
 import { useTranslation } from 'react-i18next';
 import { LANG_CODE_TO_PATH } from './LanguageRouter';
 
@@ -22,6 +23,7 @@ const iconMap: Record<string, React.ReactElement> = {
   Lock: <LockIcon />,
   Image: <ImageIcon />,
   Security: <SecurityIcon />,
+  Subtitles: <SubtitlesIcon />,
 };
 
 // Map tool IDs to translation keys
@@ -31,6 +33,7 @@ const toolI18nMap: Record<string, string> = {
   'base64': 'base64',
   'image-compressor': 'imageCompressor',
   'crypto': 'crypto',
+  'subtitler': 'subtitler',
 };
 
 export default function ToolCard({ tool }: ToolCardProps) {
@@ -54,7 +57,13 @@ export default function ToolCard({ tool }: ToolCardProps) {
           boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
         },
       }}
-      onClick={() => navigate(langPrefix + tool.path)}
+      onClick={() => {
+        if (tool.externalUrl) {
+          window.open(tool.externalUrl, '_blank', 'noopener,noreferrer');
+        } else {
+          navigate(langPrefix + tool.path);
+        }
+      }}
     >
       <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
         <Box

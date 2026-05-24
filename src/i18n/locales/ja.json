@@ -48,6 +48,10 @@
     "crypto": {
       "name": "暗号化/復号化ツール",
       "description": "AES、DES、3DES、RC4、Rabbitアルゴリズムによる安全なテキストの暗号化と復号化"
+    },
+    "subtitler": {
+      "name": "動画字幕エディター",
+      "description": "ブラウザで動画に字幕とウォーターマークを追加し、字幕付きMP4ファイルを直接書き出せます"
     }
   },
   "features": {

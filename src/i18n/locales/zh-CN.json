@@ -48,6 +48,10 @@
     "crypto": {
       "name": "加密/解密工具",
       "description": "使用 AES、DES、3DES、RC4 和 Rabbit 算法进行安全的文本加密和解密"
+    },
+    "subtitler": {
+      "name": "视频字幕编辑器",
+      "description": "在浏览器中为视频添加字幕和水印，并直接导出带字幕的 MP4 文件"
     }
   },
   "features": {

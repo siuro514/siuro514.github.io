@@ -48,6 +48,10 @@
     "crypto": {
       "name": "Encriptación/Desencriptación",
       "description": "Encriptación y desencriptación segura de texto con algoritmos AES, DES, 3DES, RC4 y Rabbit"
+    },
+    "subtitler": {
+      "name": "Editor de Subtítulos de Vídeo",
+      "description": "Añade subtítulos y marcas de agua a vídeos desde el navegador y exporta archivos MP4 con subtítulos directamente"
     }
   },
   "features": {

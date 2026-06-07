@@ -52,6 +52,10 @@
     "subtitler": {
       "name": "Editor de Subtítulos de Vídeo",
       "description": "Añade subtítulos y marcas de agua a vídeos desde el navegador y exporta archivos MP4 con subtítulos directamente"
+    },
+    "watermarkRemover": {
+      "name": "Eliminador de marcas de agua",
+      "description": "Elimina marcas de agua de imágenes localmente en tu navegador: selecciona con un recuadro o pinta el área. Las imágenes nunca se suben."
     }
   },
   "features": {
@@ -687,6 +691,82 @@
     "contact": {
       "title": "¿Tienes otras preguntas?",
       "description": "Si tu pregunta no está listada aquí o necesitas más ayuda, no dudes en contactarnos por correo electrónico."
+    }
+  },
+  "watermarkRemover": {
+    "title": "Eliminador de marcas de agua",
+    "description": "Elimina marcas de agua de imágenes directamente en tu navegador. Selecciona con un recuadro o pinta el área a eliminar; tus imágenes nunca se suben.",
+    "legalNotice": "Usa esta herramienta solo con contenido del que tengas los derechos o autorización (por ejemplo, para quitar tu propia marca de agua, fecha o logotipo).",
+    "mode": {
+      "title": "Elige el tipo de medio",
+      "image": "Imagen",
+      "video": "Vídeo"
+    },
+    "upload": {
+      "title": "Haz clic o arrastra un archivo aquí",
+      "imageHint": "Compatible con JPG, PNG, WebP y más",
+      "videoHint": "Compatible con MP4, WebM, MOV y más",
+      "imageHintMulti": "Compatible con JPG, PNG, WebP: puedes seleccionar varias imágenes a la vez"
+    },
+    "video": {
+      "captureTitle": "Previsualiza y captura el fotograma para marcar",
+      "captureHint": "Avanza hasta un fotograma donde la marca de agua se vea con claridad y haz clic en «Capturar este fotograma» para seleccionarla.",
+      "capture": "Capturar este fotograma",
+      "rectOnly": "El modo vídeo solo admite selección rectangular, ideal para marcas de agua en posición fija. Puedes seleccionar varias zonas."
+    },
+    "mark": {
+      "title": "Marca el área de la marca de agua"
+    },
+    "tools": {
+      "rect": "Rectángulo",
+      "brush": "Pincel"
+    },
+    "buttons": {
+      "remove": "Eliminar marca de agua",
+      "processing": "Procesando…",
+      "download": "Descargar",
+      "clearMarks": "Borrar marcas",
+      "reupload": "Volver a subir",
+      "addImages": "Añadir imágenes",
+      "processAll": "Eliminar marca de agua (todas las marcadas)",
+      "downloadAll": "Descargar todo (ZIP)",
+      "clearAll": "Borrar todo",
+      "applyAll": "Aplicar marcas a todas"
+    },
+    "status": {
+      "processingImage": "Eliminando la marca de agua…",
+      "loadingEngine": "Cargando el motor de vídeo (la primera vez descarga ~30 MB)…",
+      "processingVideo": "Procesando el vídeo…",
+      "processingN": "Procesando {{n}}/{{total}}…"
+    },
+    "result": {
+      "title": "Resultado"
+    },
+    "error": {
+      "notImage": "Selecciona un archivo de imagen",
+      "notVideo": "Selecciona un archivo de vídeo",
+      "loadFailed": "Error al cargar",
+      "noMark": "Primero selecciona con recuadro o pinta el área de la marca de agua",
+      "noRect": "Selecciona al menos una zona de marca de agua (el vídeo solo admite rectángulos)",
+      "processFailed": "El procesamiento falló, inténtalo de nuevo",
+      "noMarkAny": "Marca el área de la marca de agua en al menos una imagen"
+    },
+    "tips": {
+      "title": "Consejos",
+      "tip1": "En imágenes, usa el rectángulo o el pincel para marcar la marca de agua con precisión; ceñirse a los bordes da mejores resultados.",
+      "tip2": "Los resultados son mejores cuando la marca está sobre un fondo uniforme (cielo, pared lisa); las texturas complejas pueden dejar rastros.",
+      "tip3": "El vídeo usa el filtro delogo, adecuado para marcas en posición fija; puedes seleccionar varias zonas.",
+      "tip4": "Todo el procesamiento ocurre localmente en tu navegador; tus archivos nunca se suben a ningún servidor.",
+      "tipMulti": "Sube varias imágenes a la vez, alterna entre las miniaturas para marcar cada una y pulsa «Eliminar marca de agua (todas las marcadas)» para procesarlas por lotes."
+    },
+    "summary": {
+      "count": "{{count}} imágenes",
+      "marked": "{{n}} marcadas",
+      "done": "{{n}} listas"
+    },
+    "preview": {
+      "original": "Original",
+      "result": "Resultado"
     }
   }
 }

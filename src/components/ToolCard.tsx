@@ -9,6 +9,7 @@ import LockIcon from '@mui/icons-material/Lock';
 import ImageIcon from '@mui/icons-material/Image';
 import SecurityIcon from '@mui/icons-material/Security';
 import SubtitlesIcon from '@mui/icons-material/Subtitles';
+import AutoFixHighIcon from '@mui/icons-material/AutoFixHigh';
 import { useTranslation } from 'react-i18next';
 import { LANG_CODE_TO_PATH } from './LanguageRouter';
 
@@ -24,6 +25,7 @@ const iconMap: Record<string, React.ReactElement> = {
   Image: <ImageIcon />,
   Security: <SecurityIcon />,
   Subtitles: <SubtitlesIcon />,
+  AutoFixHigh: <AutoFixHighIcon />,
 };
 
 // Map tool IDs to translation keys
@@ -33,6 +35,7 @@ const toolI18nMap: Record<string, string> = {
   'base64': 'base64',
   'image-compressor': 'imageCompressor',
   'crypto': 'crypto',
+  'watermark-remover': 'watermarkRemover',
   'subtitler': 'subtitler',
 };
 

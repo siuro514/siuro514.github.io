@@ -407,7 +407,7 @@ export default function WatermarkRemoverPage() {
     const zip = new JSZip();
     for (const it of done) {
       const blob = await (await fetch(it.resultUrl!)).blob();
-      zip.file(it.resultName, blob);
+      zip.file(`${it.name.replace(/\.[^/.]+$/, '')}.png`, blob);
     }
     const content = await zip.generateAsync({ type: 'blob' });
     const url = URL.createObjectURL(content);

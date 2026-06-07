@@ -52,6 +52,10 @@
     "subtitler": {
       "name": "视频字幕编辑器",
       "description": "在浏览器中为视频添加字幕和水印，并直接导出带字幕的 MP4 文件"
+    },
+    "watermarkRemover": {
+      "name": "水印移除工具",
+      "description": "在浏览器本地移除图片上的水印，支持框选与笔刷涂抹，图片不会上传"
     }
   },
   "features": {
@@ -688,6 +692,82 @@
     "contact": {
       "title": "还有其他问题？",
       "description": "如果您的问题未在此列出，或需要更多协助，欢迎通过电子邮件与我们联系。"
+    }
+  },
+  "watermarkRemover": {
+    "title": "水印移除工具",
+    "description": "在浏览器本地移除图片上的水印，框选或涂抹要移除的区域即可，图片不会上传。",
+    "legalNotice": "请仅对你拥有版权或已获授权的内容使用本工具（例如移除自己的水印、时间戳或 logo）。",
+    "mode": {
+      "title": "选择媒体类型",
+      "image": "图片",
+      "video": "视频"
+    },
+    "upload": {
+      "title": "点击或拖拽文件到此处",
+      "imageHint": "支持 JPG、PNG、WebP 等图片格式",
+      "videoHint": "支持 MP4、WebM、MOV 等视频格式",
+      "imageHintMulti": "支持 JPG、PNG、WebP，可一次选择多张图片"
+    },
+    "video": {
+      "captureTitle": "预览并截取要标记的画面",
+      "captureHint": "拖动进度条找到能清楚看到水印的画面，再点“截取此画面”进行框选。",
+      "capture": "截取此画面",
+      "rectOnly": "视频模式仅支持矩形框选，适用于固定位置的水印。可框选多个区域。"
+    },
+    "mark": {
+      "title": "标记水印区域"
+    },
+    "tools": {
+      "rect": "矩形框选",
+      "brush": "笔刷涂抹"
+    },
+    "buttons": {
+      "remove": "移除水印",
+      "processing": "处理中…",
+      "download": "下载",
+      "clearMarks": "清除标记",
+      "reupload": "重新上传",
+      "addImages": "添加图片",
+      "processAll": "移除水印（全部已标记）",
+      "downloadAll": "下载全部 (ZIP)",
+      "clearAll": "清空全部",
+      "applyAll": "套用标记到全部"
+    },
+    "status": {
+      "processingImage": "正在移除水印…",
+      "loadingEngine": "正在加载视频处理引擎（首次约需下载 30MB）…",
+      "processingVideo": "正在处理视频…",
+      "processingN": "正在处理第 {{n}}/{{total}} 张…"
+    },
+    "result": {
+      "title": "处理结果"
+    },
+    "error": {
+      "notImage": "请选择图片文件",
+      "notVideo": "请选择视频文件",
+      "loadFailed": "加载失败",
+      "noMark": "请先框选或涂抹要移除的水印区域",
+      "noRect": "请至少框选一个水印区域（视频仅支持矩形框选）",
+      "processFailed": "处理失败，请重试",
+      "noMarkAny": "请至少标记一张图片的水印区域"
+    },
+    "tips": {
+      "title": "使用提示",
+      "tip1": "图片可用“矩形框选”或“笔刷涂抹”精准标记水印，贴合边缘效果最佳。",
+      "tip2": "水印位于平顺背景（天空、纯色墙面）上时还原效果最好；复杂纹理上可能留下痕迹。",
+      "tip3": "视频使用 delogo 滤镜，仅适合固定位置的水印，可同时框选多个区域。",
+      "tip4": "所有处理都在浏览器本地完成，不会上传你的文件到服务器。",
+      "tipMulti": "可一次上传多张图片，逐张在缩略图切换并标记，最后按“移除水印（全部已标记）”批量处理。"
+    },
+    "summary": {
+      "count": "{{count}} 张图片",
+      "marked": "已标记 {{n}}",
+      "done": "已完成 {{n}}"
+    },
+    "preview": {
+      "original": "原图",
+      "result": "处理后"
     }
   }
 }

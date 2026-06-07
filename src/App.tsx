@@ -15,6 +15,7 @@ import JsonParserPage from './pages/tools/JsonParserPage';
 import Base64Page from './pages/tools/Base64Page';
 import CryptoPage from './pages/tools/CryptoPage';
 import ImageCompressorPage from './pages/tools/ImageCompressorPage';
+import WatermarkRemoverPage from './pages/tools/WatermarkRemoverPage';
 import PrivacyPage from './pages/PrivacyPage';
 import TermsPage from './pages/TermsPage';
 import AboutPage from './pages/AboutPage';
@@ -42,6 +43,7 @@ function DocumentTitle() {
       '/tools/base64': t('tools.base64.name'),
       '/tools/crypto': t('tools.crypto.name'),
       '/tools/image-compressor': t('tools.imageCompressor.name'),
+      '/tools/watermark-remover': t('tools.watermarkRemover.name'),
       '/about': t('nav.about'),
       '/privacy': t('footer.privacy'),
       '/terms': t('footer.terms'),
@@ -58,6 +60,7 @@ function DocumentTitle() {
       '/tools/base64': t('tools.base64.description'),
       '/tools/crypto': t('tools.crypto.description'),
       '/tools/image-compressor': t('tools.imageCompressor.description'),
+      '/tools/watermark-remover': t('tools.watermarkRemover.description'),
       '/about': t('about.description'),
       '/privacy': t('privacy.metaDescription'),
       '/terms': t('terms.metaDescription'),
@@ -173,6 +176,7 @@ function LanguageRoutes() {
       <Route path="/tools/base64" element={<><Navbar /><Base64Page /><Footer /></>} />
       <Route path="/tools/crypto" element={<><Navbar /><CryptoPage /><Footer /></>} />
       <Route path="/tools/image-compressor" element={<><Navbar /><ImageCompressorPage /><Footer /></>} />
+      <Route path="/tools/watermark-remover" element={<><Navbar /><WatermarkRemoverPage /><Footer /></>} />
       <Route path="/about" element={<><Navbar /><AboutPage /><Footer /></>} />
       <Route path="/privacy" element={<><Navbar /><PrivacyPage /><Footer /></>} />
       <Route path="/terms" element={<><Navbar /><TermsPage /><Footer /></>} />
@@ -339,6 +343,7 @@ function App() {
               <Route path="/tools/base64" element={<Navigate to="/en/tools/base64" replace />} />
               <Route path="/tools/crypto" element={<Navigate to="/en/tools/crypto" replace />} />
               <Route path="/tools/image-compressor" element={<Navigate to="/en/tools/image-compressor" replace />} />
+              <Route path="/tools/watermark-remover" element={<Navigate to="/en/tools/watermark-remover" replace />} />
               <Route path="/about" element={<Navigate to="/en/about" replace />} />
               <Route path="/privacy" element={<Navigate to="/en/privacy" replace />} />
               <Route path="/terms" element={<Navigate to="/en/terms" replace />} />

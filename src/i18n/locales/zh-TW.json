@@ -52,6 +52,10 @@
     "subtitler": {
       "name": "影片字幕編輯器",
       "description": "在瀏覽器中為影片加上字幕與浮水印，並直接匯出帶字幕的 MP4 檔案"
+    },
+    "watermarkRemover": {
+      "name": "浮水印移除工具",
+      "description": "在瀏覽器本機移除圖片上的浮水印，支援框選與筆刷塗抹，圖片不會上傳"
     }
   },
   "features": {
@@ -688,6 +692,82 @@
     "contact": {
       "title": "還有其他問題？",
       "description": "如果您的問題未在此列出，或需要更多協助，歡迎透過電子郵件與我們聯絡。"
+    }
+  },
+  "watermarkRemover": {
+    "title": "浮水印移除工具",
+    "description": "在瀏覽器本機移除圖片上的浮水印，框選或塗抹要移除的區域即可，圖片不會上傳。",
+    "legalNotice": "請僅對你擁有版權或已獲授權的內容使用本工具（例如移除自己的浮水印、時間戳或 logo）。",
+    "mode": {
+      "title": "選擇媒體類型",
+      "image": "圖片",
+      "video": "影片"
+    },
+    "upload": {
+      "title": "點擊或拖曳檔案到此處",
+      "imageHint": "支援 JPG、PNG、WebP 等圖片格式",
+      "videoHint": "支援 MP4、WebM、MOV 等影片格式",
+      "imageHintMulti": "支援 JPG、PNG、WebP，可一次選擇多張圖片"
+    },
+    "video": {
+      "captureTitle": "預覽並擷取要標記的畫面",
+      "captureHint": "拖動進度條找到能清楚看到浮水印的畫面，再點「擷取此畫面」進行框選。",
+      "capture": "擷取此畫面",
+      "rectOnly": "影片模式僅支援矩形框選，適用於固定位置的浮水印。可框選多個區域。"
+    },
+    "mark": {
+      "title": "標記浮水印區域"
+    },
+    "tools": {
+      "rect": "矩形框選",
+      "brush": "筆刷塗抹"
+    },
+    "buttons": {
+      "remove": "移除浮水印",
+      "processing": "處理中…",
+      "download": "下載",
+      "clearMarks": "清除標記",
+      "reupload": "重新上傳",
+      "addImages": "新增圖片",
+      "processAll": "移除浮水印（全部已標記）",
+      "downloadAll": "下載全部 (ZIP)",
+      "clearAll": "清空全部",
+      "applyAll": "套用標記到全部"
+    },
+    "status": {
+      "processingImage": "正在移除浮水印…",
+      "loadingEngine": "正在載入影片處理引擎（首次約需下載 30MB）…",
+      "processingVideo": "正在處理影片…",
+      "processingN": "正在處理第 {{n}}/{{total}} 張…"
+    },
+    "result": {
+      "title": "處理結果"
+    },
+    "error": {
+      "notImage": "請選擇圖片檔案",
+      "notVideo": "請選擇影片檔案",
+      "loadFailed": "載入失敗",
+      "noMark": "請先框選或塗抹要移除的浮水印區域",
+      "noRect": "請至少框選一個浮水印區域（影片僅支援矩形框選）",
+      "processFailed": "處理失敗，請重試",
+      "noMarkAny": "請至少標記一張圖片的浮水印區域"
+    },
+    "tips": {
+      "title": "使用提示",
+      "tip1": "圖片可用「矩形框選」或「筆刷塗抹」精準標記浮水印，貼合邊緣效果最佳。",
+      "tip2": "浮水印位於平順背景（天空、純色牆面）上時還原效果最好；複雜紋理上可能留下痕跡。",
+      "tip3": "影片使用 delogo 濾鏡，僅適合固定位置的浮水印，可同時框選多個區域。",
+      "tip4": "所有處理都在瀏覽器本機完成，不會上傳你的檔案到伺服器。",
+      "tipMulti": "可一次上傳多張圖片，逐張在縮圖切換並標記，最後按「移除浮水印（全部已標記）」批次處理。"
+    },
+    "summary": {
+      "count": "{{count}} 張圖片",
+      "marked": "已標記 {{n}}",
+      "done": "已完成 {{n}}"
+    },
+    "preview": {
+      "original": "原圖",
+      "result": "處理後"
     }
   }
 }

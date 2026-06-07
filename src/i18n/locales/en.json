@@ -52,6 +52,10 @@
     "subtitler": {
       "name": "Video Subtitle Editor",
       "description": "Add subtitles and watermarks to videos in your browser and export subtitled MP4 files directly"
+    },
+    "watermarkRemover": {
+      "name": "Watermark Remover",
+      "description": "Remove watermarks from images locally in your browser — box-select or brush over the area. Images never leave your device."
     }
   },
   "features": {
@@ -688,6 +692,82 @@
     "contact": {
       "title": "Have other questions?",
       "description": "If your question is not listed here or you need more help, feel free to contact us via email."
+    }
+  },
+  "watermarkRemover": {
+    "title": "Watermark Remover",
+    "description": "Remove watermarks from images right in your browser. Box-select or brush over the area to remove — your images are never uploaded.",
+    "legalNotice": "Please only use this tool on content you own or are authorized to edit (e.g. removing your own watermark, timestamp, or logo).",
+    "mode": {
+      "title": "Choose media type",
+      "image": "Image",
+      "video": "Video"
+    },
+    "upload": {
+      "title": "Click or drag a file here",
+      "imageHint": "Supports JPG, PNG, WebP and more",
+      "videoHint": "Supports MP4, WebM, MOV and more",
+      "imageHintMulti": "Supports JPG, PNG, WebP — you can select multiple images at once"
+    },
+    "video": {
+      "captureTitle": "Preview and capture the frame to mark",
+      "captureHint": "Scrub to a frame where the watermark is clearly visible, then click “Capture this frame” to box-select it.",
+      "capture": "Capture this frame",
+      "rectOnly": "Video mode supports rectangle selection only, ideal for fixed-position watermarks. You can select multiple regions."
+    },
+    "mark": {
+      "title": "Mark the watermark area"
+    },
+    "tools": {
+      "rect": "Rectangle",
+      "brush": "Brush"
+    },
+    "buttons": {
+      "remove": "Remove watermark",
+      "processing": "Processing…",
+      "download": "Download",
+      "clearMarks": "Clear marks",
+      "reupload": "Re-upload",
+      "addImages": "Add images",
+      "processAll": "Remove watermark (all marked)",
+      "downloadAll": "Download all (ZIP)",
+      "clearAll": "Clear all",
+      "applyAll": "Apply marks to all"
+    },
+    "status": {
+      "processingImage": "Removing watermark…",
+      "loadingEngine": "Loading the video engine (first run downloads ~30MB)…",
+      "processingVideo": "Processing video…",
+      "processingN": "Processing {{n}}/{{total}}…"
+    },
+    "result": {
+      "title": "Result"
+    },
+    "error": {
+      "notImage": "Please select an image file",
+      "notVideo": "Please select a video file",
+      "loadFailed": "Failed to load",
+      "noMark": "Please box-select or brush over the watermark area first",
+      "noRect": "Please select at least one watermark region (video supports rectangles only)",
+      "processFailed": "Processing failed, please try again",
+      "noMarkAny": "Please mark the watermark area on at least one image"
+    },
+    "tips": {
+      "title": "Tips",
+      "tip1": "For images, use the rectangle or brush tool to mark the watermark precisely — hugging the edges works best.",
+      "tip2": "Results are best when the watermark sits on a smooth background (sky, plain wall); complex textures may leave traces.",
+      "tip3": "Video uses the delogo filter, suited to fixed-position watermarks; you can select multiple regions.",
+      "tip4": "All processing happens locally in your browser — your files are never uploaded to any server.",
+      "tipMulti": "Upload several images at once, switch between thumbnails to mark each, then click “Remove watermark (all marked)” to batch process."
+    },
+    "summary": {
+      "count": "{{count}} images",
+      "marked": "{{n}} marked",
+      "done": "{{n}} done"
+    },
+    "preview": {
+      "original": "Original",
+      "result": "Result"
     }
   }
 }

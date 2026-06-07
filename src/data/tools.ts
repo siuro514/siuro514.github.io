@@ -50,6 +50,14 @@ export const tools: Tool[] = [
     color: '#E67455',
   },
   {
+    id: 'watermark-remover',
+    name: '浮水印移除工具',
+    description: '在瀏覽器本機移除圖片上的浮水印，支援框選與筆刷塗抹，圖片不會上傳',
+    icon: 'AutoFixHigh',
+    path: '/tools/watermark-remover',
+    color: '#D98C8C',
+  },
+  {
     id: 'subtitler',
     name: '影片字幕編輯器',
     description: '在瀏覽器中為影片加上字幕與浮水印，並直接匯出帶字幕的 MP4 檔案',
